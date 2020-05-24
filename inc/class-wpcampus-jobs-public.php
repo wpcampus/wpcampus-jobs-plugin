@@ -91,6 +91,9 @@ final class WPCampus_Jobs_Public {
 			$object_id = $term->object_id;
 			unset( $term->object_id );
 
+			// Convert term_id to an integer.
+			$term->term_id = (int) $term->term_id;
+
 			// Make sure we have an index for the job ID.
 			if ( ! isset( $by_id[ $object_id ] ) ) {
 				$by_type[ $object_id ] = [];
@@ -242,6 +245,15 @@ final class WPCampus_Jobs_Public {
 
 		// Normalize permalink.
 		$job->permalink = get_permalink( $job->ID );
+
+		// Convert to integer.
+		$to_int = [ 'ID', 'author' ];
+
+		foreach ( $to_int as $key ) {
+			if ( isset( $job->{$key} ) ) {
+				$job->{$key} = (int) $job->{$key};
+			}
+		}
 
 		return $job;
 	}
